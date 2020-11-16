@@ -2,7 +2,6 @@ import os
 
 import exifread
 from RenameMod import rename
-from logging import exception
 
 # variables
 dirs_left = []
