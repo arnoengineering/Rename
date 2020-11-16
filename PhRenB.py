@@ -7,12 +7,14 @@ from RenameMod import rename
 dirs_left = []
 tot_suc = 0
 tot_fail = 0
+tot_un = 0
+tot_f = 0
 
 # edit options
-path_main = r'C:\Users\parno\Desktop\La Pas'  # 'N:\\P + V\\Photos'  # input('Path: ')  # what directory to edit
+path_main = 'N:\\P + V\\Photos'  # input('Path: ')  # what directory to edit
 
 # if has special name
-dict_to_edit = {}
+dict_to_edit = {'Beacon Isl': 'RSA Beacon Isl', 'Dehlen': 'RSA Dehlen', 'RSA Imma': 'RSA Imma'}
 # dir_to_edit = [# 'GradParents\\The Gir', 'Hobbies\\Awana''s Rally 2011', 'Sleeping']
 
 
@@ -87,7 +89,7 @@ class PicLoop:
         self.first_run = False  # resets val for second run
 
     def main(self):
-        global tot_suc, tot_fail
+        global tot_suc, tot_fail, tot_un, tot_f
         try:
             pic_dir = os.listdir(self.path)
         except FileNotFoundError:
@@ -123,10 +125,11 @@ class PicLoop:
 
             tot_suc += self.success_rename  # total for all dirs
             tot_fail += self.fail_rename
-
+            tot_un += self.un_ed
+            tot_f += len(pic_dir)  # total possible
             # print all num. file list is only modified by exif
             print("\nediting {} files".format(len(self.pic_list)))
-            print('{} files unedited (name or extension) of {}'.format(self.un_ed, len(pic_dir)))
+            print('{} files left unedited (name or extension) of {}'.format(self.un_ed, len(pic_dir)))
             print("EXIF Data: {} success, and {} failures".format(len(self.file_list), len(self.fail_exif)))
             print('Finished editing {} successes, and {} failures\n'.format(self.success_rename, self.fail_rename))
             if len(self.left_list) > 0:
@@ -152,5 +155,6 @@ for root, dirs, files in os.walk(path_main):  # loops through all and sees if to
 
 # prints after com
 print('Finished editing all {} successes, and {} failures'.format(tot_suc, tot_fail))
+print('{} files left unedited (name or extension) of {}'.format(tot_un, tot_f))
 if len(dirs_left) > 0:
     print('dirs left ', dirs_left)
