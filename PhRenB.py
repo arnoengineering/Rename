@@ -2,6 +2,7 @@ import os
 
 import exifread
 from RenameMod import rename
+from logging import exception
 
 # variables
 dirs_left = []
@@ -49,7 +50,7 @@ class PicLoop:
                 try:
                     date_path = str(tags["EXIF DateTimeOriginal"]).replace(":", ".")
                     self.file_list[date_path] = f
-                except:  # todo exception
+                except KeyError:
                     print(str(f) + " does not have EXIF tags.")
                     self.fail_exif.append(f)  # list to run at end
 
@@ -154,4 +155,3 @@ for root, dirs, files in os.walk(path_main):  # loops through all and sees if to
 print('Finished editing all {} successes, and {} failures'.format(tot_suc, tot_fail))
 if len(dirs_left) > 0:
     print('dirs left ', dirs_left)
-
