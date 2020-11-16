@@ -8,14 +8,14 @@ dirs_left = []
 tot_suc = 0
 tot_fail = 0
 tot_un = 0
-tot_f = 0
+tot_pos = 0
 
 # edit options
-path_main = 'N:\\P + V\\Photos'  # input('Path: ')  # what directory to edit
+path_main = 'N:\\P + V\\Photos'  # what directory to edit
 
 # if has special name
 dict_to_edit = {'Beacon Isl': 'RSA Beacon Isl', 'Dehlen': 'RSA Dehlen', 'RSA Imma': 'RSA Imma'}
-# dir_to_edit = [# 'GradParents\\The Gir', 'Hobbies\\Awana''s Rally 2011', 'Sleeping']
+sub_ed = []  # grabs two dir
 
 
 class PicLoop:
@@ -45,6 +45,7 @@ class PicLoop:
     def exif_pic(self, dir_pics):
         for f in dir_pics:  # loops through all files in list to edit
             f_full = os.path.join(path, f)
+
             # opens full file-path to grab Metadata
             with open(f_full, "rb") as file:
                 tags = exifread.process_file(file, details=False, stop_tag="DateTimeOriginal")
@@ -89,7 +90,7 @@ class PicLoop:
         self.first_run = False  # resets val for second run
 
     def main(self):
-        global tot_suc, tot_fail, tot_un, tot_f
+        global tot_suc, tot_fail, tot_un, tot_pos
         try:
             pic_dir = os.listdir(self.path)
         except FileNotFoundError:
@@ -126,7 +127,8 @@ class PicLoop:
             tot_suc += self.success_rename  # total for all dirs
             tot_fail += self.fail_rename
             tot_un += self.un_ed
-            tot_f += len(pic_dir)  # total possible
+            tot_pos += len(pic_dir)  # total possible
+
             # print all num. file list is only modified by exif
             print("\nediting {} files".format(len(self.pic_list)))
             print('{} files left unedited (name or extension) of {}'.format(self.un_ed, len(pic_dir)))
@@ -141,6 +143,8 @@ for root, dirs, files in os.walk(path_main):  # loops through all and sees if to
     for alb in dirs:
         if alb in dict_to_edit.keys():  # checks for name
             name = dict_to_edit[alb]  # sets name to my name, use dor double dirs
+        elif alb in sub_ed:
+            name = root.split('\\', 1)[-1] + ' ' + alb
         else:
             name = alb  # name = alb name
         try:
@@ -155,6 +159,6 @@ for root, dirs, files in os.walk(path_main):  # loops through all and sees if to
 
 # prints after com
 print('Finished editing all {} successes, and {} failures'.format(tot_suc, tot_fail))
-print('{} files left unedited (name or extension) of {}'.format(tot_un, tot_f))
+print('{} files left unedited (name or extension) of {}'.format(tot_un, tot_pos))
 if len(dirs_left) > 0:
     print('dirs left ', dirs_left)
