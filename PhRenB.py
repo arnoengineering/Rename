@@ -7,7 +7,7 @@ from RenameMod import rename
 dirs_left = []
 
 # edit options
-path_main = 'N:\\P + V\\Photos'  # input('Path: ')  # what directory to edit
+path_main = r'C:\Users\parno\Desktop\La Pas'  # 'N:\\P + V\\Photos'  # input('Path: ')  # what directory to edit
 
 # if has special name
 dict_to_edit = {}
@@ -118,7 +118,7 @@ class PicLoop:
                     print('Second error {} at num: {}'.format(e, n_file))
                     self.fail_rename += 1
 
-            print('{} files unedited of {}'.format(self.un_ed, len(pic_dir)))
+            print('{} files unedited of {}'.format(self.un_ed, len(pic_dir)))  # todo add fail num cor, and for each alb
             print("Finished with {} success, and {} failures".format(len(self.file_list), len(self.fail_exif)))
             print('edit {} successes, and {} failures'.format(self.success_rename, self.fail_rename))
             if len(self.left_list) > 0:
@@ -138,6 +138,7 @@ for root, dirs, files in os.walk(path_main):  # loops through all and sees if to
             print('unable to edit ' + alb)
             dirs_left.append(alb)
         else:
+            print('editing ', alb)
             edit_dir = PicLoop(path, name)  # initialises class
             edit_dir.main()  # starts main class exclusion
 
