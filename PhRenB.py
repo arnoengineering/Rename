@@ -5,6 +5,8 @@ from RenameMod import rename
 
 # variables
 dirs_left = []
+tot_suc = 0
+tot_fail = 0
 
 # edit options
 path_main = r'C:\Users\parno\Desktop\La Pas'  # 'N:\\P + V\\Photos'  # input('Path: ')  # what directory to edit
@@ -85,6 +87,7 @@ class PicLoop:
         self.first_run = False  # resets val for second run
 
     def main(self):
+        global tot_suc, tot_fail
         try:
             pic_dir = os.listdir(self.path)
         except FileNotFoundError:
@@ -102,7 +105,7 @@ class PicLoop:
                         self.left_list.append(fi)
                 else:
                     self.un_ed += 1
-            print("editing {} files".format(len(self.pic_list)))
+
             self.loop_pic(self.start_num, self.pic_list)  # first_run to add suffix and update edit list
 
             self.exif_pic(self.pic_list)  # grabs exif data and
@@ -118,9 +121,14 @@ class PicLoop:
                     print('Second error {} at num: {}'.format(e, n_file))
                     self.fail_rename += 1
 
-            print('{} files unedited of {}'.format(self.un_ed, len(pic_dir)))  # todo add fail num cor, and for each alb
-            print("Finished with {} success, and {} failures".format(len(self.file_list), len(self.fail_exif)))
-            print('edit {} successes, and {} failures'.format(self.success_rename, self.fail_rename))
+            tot_suc += self.success_rename  # total for all dirs
+            tot_fail += self.fail_rename
+
+            # print all num. file list is only modified by exif
+            print("\nediting {} files".format(len(self.pic_list)))
+            print('{} files unedited (name or extension) of {}'.format(self.un_ed, len(pic_dir)))
+            print("EXIF Data: {} success, and {} failures".format(len(self.file_list), len(self.fail_exif)))
+            print('Finished editing {} successes, and {} failures\n'.format(self.success_rename, self.fail_rename))
             if len(self.left_list) > 0:
                 print('Not images: ')
                 print(self.left_list)
@@ -142,5 +150,8 @@ for root, dirs, files in os.walk(path_main):  # loops through all and sees if to
             edit_dir = PicLoop(path, name)  # initialises class
             edit_dir.main()  # starts main class exclusion
 
+# prints after com
+print('Finished editing all {} successes, and {} failures'.format(tot_suc, tot_fail))
+if len(dirs_left) > 0:
+    print('dirs left ', dirs_left)
 
-print(dirs_left)
