@@ -5,7 +5,6 @@ from PIL import Image
 # edits tags
 import mutagen
 from mutagen.easyid3 import EasyID3
-from logging import exception
 
 
 def image_disc(img_path, n_disc):
@@ -19,8 +18,8 @@ def image_disc(img_path, n_disc):
             ex_bytes = piexif.dump({'0th': {270: n_disc}})  # changes disc
             piexif.insert(ex_bytes, img_path)  # adds to photo
             had_disc = False
-    except:
-        print('error with image ' + img_path.split('/')[-1])  # prints image
+    except KeyError as e:
+        print('error {} with image {}'.format(e, img_path.split('/')[-1]))  # prints image
     return had_disc
 
 
