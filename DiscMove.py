@@ -5,18 +5,19 @@ from ExRead import image_disc
 
 # Path for sorted files to be stored
 # If it doesn't exist, creates a new one
-dirs_path = "D:\\Sorted\\"
+dirs_path = r'C:\Users\parno\Desktop\LA S'  # r"N:\P + V\PH Sorted"
 if not os.path.exists(dirs_path):
     os.mkdir(dirs_path)
 
 # Where images to be organized are located
-images_path = "C:\\Users\\parno\\Desktop\\La Pas"
+images_path = r'C:\Users\parno\Desktop\La Pas'  # r"N:\P + V\Photos"
 
 fail_count = 0
 success_count = 0
 start_num = 0
 
-
+# files to get double dir
+sub_dir = ['Edits', 'Weird', 'Notes', 'Alaska', 'Baltic', 'Greece', 'Mediterranean', 'New England', 'Norway']
 # Recursively walk through all subdirectories and store the path + name of the jpg images
 images = []
 pic_rename = []
@@ -25,8 +26,9 @@ pic_rename = []
 for root, dirs, files in os.walk(images_path):
     for f in files:
         # I'm only interested in pictures
-        if f.endswith(".jpg") or f.endswith(".NEF"):
-            images.append(f)
+        if f.lower().endswith(".jpg") or f.endswith(".NEF"):
+            image_p = os.path.join(root, f)
+            images.append(image_p)
 
 
 # Extracts the date an image was taken and moves it to a folder with the format YYYY.MM
@@ -34,7 +36,10 @@ for root, dirs, files in os.walk(images_path):
 for img_path in images:
     fold = os.path.dirname(img_path)  # dir to file
     img = os.path.basename(img_path)  # filename
+
     parent_dir = fold.split('\\')[-1]  # last dir
+    if parent_dir in sub_dir:  # two up description
+        parent_dir = ', '.join(fold.split('\\')[-2:])
     had_dir = image_disc(img_path, parent_dir)  # to grab disc
 
     with open(img_path, "rb") as file:

@@ -10,15 +10,16 @@ from mutagen.easyid3 import EasyID3
 def image_disc(img_path, n_disc):
     had_disc = True
     img = Image.open(img_path)  # loads image
-    ex_dict = piexif.load(img.info['exif'])  # gets metadata
-    disc = ex_dict['0th'][270].decode('utf-8')  # description at 0th, 270. Type: bytes so string to see if one already
-    if len(disc.replace(' ', '')) == 0:
-        try:
+    try:
+        ex_dict = piexif.load(img.info['exif'])  # gets metadata
+        # description at 0th, 270. Type: bytes so string to see if one already
+        disc = ex_dict['0th'][270].decode('utf-8')
+        if len(disc.replace(' ', '')) == 0:
             ex_bytes = piexif.dump({'0th': {270: n_disc}})  # changes disc
             piexif.insert(ex_bytes, img_path)  # adds to photo
             had_disc = False
-        except:
-            print('error with image ' + img_path.split('/')[-1])  # prints image
+    except:
+        print('error with image ' + img_path.split('/')[-1])  # prints image
     return had_disc
 
 
