@@ -9,6 +9,7 @@ from mutagen.easyid3 import EasyID3
 
 def image_disc(img_path, n_disc):
     had_disc = True
+    # er_l todo fix so that unedited files are left
     with Image.open(img_path) as img:  # loads image
         try:
             ex_dict = piexif.load(img.info['exif'])  # gets metadata

@@ -54,7 +54,7 @@ for img_path in images:
                 date_path = str(tags["EXIF DateTimeOriginal"]).replace(":", ".")[:7]
                 success_count += 1
 
-            except:
+            except KeyError:
                 print(str(img_path) + " does not have EXIF tags.")
                 fail_count += 1
                 date_path = "No Date"
