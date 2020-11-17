@@ -58,10 +58,11 @@ for img_path in images:
                 print(str(img_path) + " does not have EXIF tags.")
                 fail_count += 1
                 date_path = "No Date"
-        if not os.path.exists(dirs_path + date_path):
-            os.mkdir(dirs_path + date_path)
+        new_path = os.path.join(dirs_path, date_path)
+        if not os.path.exists(new_path):
+            os.mkdir(new_path)
 
-    shutil.move(img_path, dirs_path + date_path + "\\" + img)  # moves to correct dir
+    shutil.move(img_path, new_path + "\\" + img)  # moves to correct dir
 
 
 print("Sorted " + str(success_count) + " files.")  # Images properly sorted by date taken
