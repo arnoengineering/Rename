@@ -5,6 +5,7 @@ from PIL import Image
 # edits tags
 import mutagen
 from mutagen.easyid3 import EasyID3
+from logging import exception
 
 
 def image_disc(img_path, n_disc):
