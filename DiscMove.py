@@ -5,12 +5,12 @@ from ExRead import image_disc
 
 # Path for sorted files to be stored
 # If it doesn't exist, creates a new one
-dirs_path = r'C:\Users\parno\Desktop\LA S'  # r"N:\P + V\PH Sorted"
+dirs_path = r"N:\P + V\PH Sorted"
 if not os.path.exists(dirs_path):
     os.mkdir(dirs_path)
 
 # Where images to be organized are located
-images_path = r'C:\Users\parno\Desktop\La Pas'  # r"N:\P + V\Photos"
+images_path = r"N:\P + V\Photos"
 
 fail_count = 0
 success_count = 0
