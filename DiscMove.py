@@ -43,15 +43,15 @@ for img_path in images:
         parent_dir = ', '.join(fold.split('\\')[-2:])
     had_dir, er_load = image_disc(img_path, parent_dir)  # to grab disc
 
-    with open(img_path, "rb") as file:
-        if had_dir:  # add to description files
-            date_path = parent_dir + "Had Description"
-            fail_count += 1
-        elif er_load:
-            date_path = parent_dir + " Exif error"
-            fail_count += 1
+    if had_dir:  # add to description files
+        date_path = parent_dir + "Had Description"
+        fail_count += 1
+    elif er_load:
+        date_path = parent_dir + " Exif error"
+        fail_count += 1
 
-        else:
+    else:
+        with open(img_path, "rb") as file:
             tags = exifread.process_file(file, details=False, stop_tag="DateTimeOriginal")
 
             try:
@@ -62,12 +62,14 @@ for img_path in images:
                 print(str(img_path) + " does not have EXIF tags.")
                 fail_count += 1
                 date_path = "No Date"
-        new_path = os.path.join(dirs_path, date_path)
-        if not os.path.exists(new_path):
-            os.mkdir(new_path)
+    new_path = os.path.join(dirs_path, date_path)
+    if not os.path.exists(new_path):
+        os.mkdir(new_path)
 
+    try:
         shutil.move(img_path, new_path + "\\" + img)  # moves to correct dir
-
+    except FileExistsError:
+        shutil.move(img_path, new_path + "\\" + img + '-exits')  # moves to correct dir
 
 print("Sorted " + str(success_count) + " files.")  # Images properly sorted by date taken
 print("Failed to sort " + str(fail_count) + " files.")  # Images sent to 0000
