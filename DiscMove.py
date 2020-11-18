@@ -30,8 +30,6 @@ for root, dirs, files in os.walk(images_path):
         image_p = os.path.join(root, f)
         if f.lower().endswith(".jpg") or f.endswith('.NEF'):
             images.append(image_p)
-        # elif f.endswith(".NEF"):
-        #     nef_pics.append(image_p)
 
 
 # Extracts the date an image was taken and moves it to a folder with the format YYYY.MM
@@ -45,28 +43,28 @@ for img_path in images:
         parent_dir = ', '.join(fold.split('\\')[-2:])
     had_dir, er_load = image_disc(img_path, parent_dir)  # to grab disc
 
-    if er_load:
-        fail_count += 1
-    else:
-        with open(img_path, "rb") as file:
-            if had_dir:  # add to description files
-                date_path = "Had Description"
+    with open(img_path, "rb") as file:
+        if had_dir:  # add to description files
+            date_path = "Had Description"
+            fail_count += 1
+        elif er_load:
+            date_path = parent_dir + " Exif error"
+            fail_count += 1
+
+        else:
+            tags = exifread.process_file(file, details=False, stop_tag="DateTimeOriginal")
+
+            try:
+                date_path = str(tags["EXIF DateTimeOriginal"]).replace(":", ".")[:7]
+                success_count += 1
+
+            except KeyError:
+                print(str(img_path) + " does not have EXIF tags.")
                 fail_count += 1
-
-            else:
-                tags = exifread.process_file(file, details=False, stop_tag="DateTimeOriginal")
-
-                try:
-                    date_path = str(tags["EXIF DateTimeOriginal"]).replace(":", ".")[:7]
-                    success_count += 1
-
-                except KeyError:
-                    print(str(img_path) + " does not have EXIF tags.")
-                    fail_count += 1
-                    date_path = "No Date"
-            new_path = os.path.join(dirs_path, date_path)
-            if not os.path.exists(new_path):
-                os.mkdir(new_path)
+                date_path = "No Date"
+        new_path = os.path.join(dirs_path, date_path)
+        if not os.path.exists(new_path):
+            os.mkdir(new_path)
 
         shutil.move(img_path, new_path + "\\" + img)  # moves to correct dir
 

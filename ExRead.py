@@ -1,9 +1,9 @@
 # add description to image
+import exifread
 import piexif
 import os
 from PIL import Image
-from PIL.ExifTags import TAGS
-# edits tags
+
 import mutagen
 from mutagen.easyid3 import EasyID3
 
@@ -11,28 +11,36 @@ from mutagen.easyid3 import EasyID3
 def image_disc(img_path, n_disc):
     # if img_path.endswith('.NEF'): # change type
     had_disc = True
-    er_l = False  # todo fix so that unedited files are left
+    load_error = False
     with Image.open(img_path) as img:  # loads image
         try:
-            ex_dict = img.getexif()  # piexif.load(img.info)  # gets metadata
-            print(ex_dict)
-            # description at 0th, 270. Type: bytes so string to see if one already
-            ex_0 = ex_dict['0th']
-            if 270 not in ex_0.keys():  # if not in, add to remove error
-                ex_0[270] = b''
-            disc = ex_0[270].decode('utf-8')
+            if img_path.endswith('.NEF'):
+                ex_dict = img.tag  # nef tag
+
+            else:
+                ex_dict = img.getexif()  # piexif.load(img.info)  # gets metadata
+                # description at 0th, 270. Type: bytes so string to see if one already
+                ex_dict = ex_dict['0th']
+
+            if 270 not in ex_dict.keys():  # if not in, add to remove error
+                ex_dict[270] = b''
+
+            disc = ex_dict[270].decode('utf-8')
             if len(disc.replace(' ', '')) == 0:
                 ex_bytes = piexif.dump({'0th': {270: n_disc}})  # changes disc
                 piexif.insert(ex_bytes, img_path)  # adds to photo
                 had_disc = False
+
         except KeyError as e:
             print('error {} with image {}'.format(e, img_path.split('/')[-1]))  # prints image
-            er_l = True
-    return had_disc, er_l
+            load_error = True
+    return had_disc, load_error
 
-# def nef_data(img_path):
-#     with Image.open(img_path) as img:
-#         ex_dict = img.getexif()
+
+def nef_data(img_path):
+    f = open(img_path, 'rb')
+    tags = exifread.process_file(f, details=False, stop_tag="DateTimeOriginal")
+    print(tags)
 
 
 def mp3(file, alb, artist='Adventures in Odyssey'):  # use for mp3, but default odyssey
@@ -55,3 +63,4 @@ def mp3(file, alb, artist='Adventures in Odyssey'):  # use for mp3, but default 
             tag.save()
         except:
             print('error with {} in {}'.format(name, alb))
+
