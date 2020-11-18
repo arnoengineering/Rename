@@ -45,7 +45,7 @@ for img_path in images:
 
     with open(img_path, "rb") as file:
         if had_dir:  # add to description files
-            date_path = "Had Description"
+            date_path = parent_dir + "Had Description"
             fail_count += 1
         elif er_load:
             date_path = parent_dir + " Exif error"
