@@ -2,17 +2,20 @@
 import piexif
 import os
 from PIL import Image
+from PIL.ExifTags import TAGS
 # edits tags
 import mutagen
 from mutagen.easyid3 import EasyID3
 
 
 def image_disc(img_path, n_disc):
+    # if img_path.endswith('.NEF'): # change type
     had_disc = True
-    # er_l todo fix so that unedited files are left
+    er_l = False  # todo fix so that unedited files are left
     with Image.open(img_path) as img:  # loads image
         try:
-            ex_dict = piexif.load(img.info['exif'])  # gets metadata
+            ex_dict = img.getexif()  # piexif.load(img.info)  # gets metadata
+            print(ex_dict)
             # description at 0th, 270. Type: bytes so string to see if one already
             ex_0 = ex_dict['0th']
             if 270 not in ex_0.keys():  # if not in, add to remove error
@@ -24,7 +27,12 @@ def image_disc(img_path, n_disc):
                 had_disc = False
         except KeyError as e:
             print('error {} with image {}'.format(e, img_path.split('/')[-1]))  # prints image
-    return had_disc
+            er_l = True
+    return had_disc, er_l
+
+# def nef_data(img_path):
+#     with Image.open(img_path) as img:
+#         ex_dict = img.getexif()
 
 
 def mp3(file, alb, artist='Adventures in Odyssey'):  # use for mp3, but default odyssey
