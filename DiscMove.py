@@ -34,7 +34,7 @@ for root, dirs, files in os.walk(images_path):
 
 # Extracts the date an image was taken and moves it to a folder with the format YYYY.MM
 # If the image doesn't have EXIF tags or has description, sends it to a different folder
-for img_path in images:
+for num, img_path in enumerate(images):
     fold = os.path.dirname(img_path)  # dir to file
     img = os.path.basename(img_path)  # filename
 
@@ -46,7 +46,7 @@ for img_path in images:
     if had_dir:  # add to description files
         date_path = parent_dir + "Had Description"
         fail_count += 1
-    elif er_load:
+    elif er_load:  # saves to folder for error for review
         date_path = parent_dir + " Exif error"
         fail_count += 1
 
@@ -57,20 +57,21 @@ for img_path in images:
             try:
                 date_path = str(tags["EXIF DateTimeOriginal"]).replace(":", ".")[:7]
 
-                # check if posible
+                # check if date is formatted correctly
                 try:
                     int(date_path[0])
                 except ValueError:
                     print('Using datetime')
-                    date_path = str(tags["Image DateTime"]).replace(":", ".")[:7]
+                    date_path = str(tags["Image DateTime"]).replace(":", ".")[:7]  # grabs other date if not
                 success_count += 1
 
             except KeyError:
                 print(str(img_path) + " does not have EXIF tags.")
                 fail_count += 1
                 date_path = "No Date"
-    if success_count >= 0 and success_count % 100 == 0:
-        print('working')  # so you know its running
+
+    if num >= 0 and num % 50 == 0:  # so you know its still running
+        print('Completed ', num)
     new_path = os.path.join(dirs_path, date_path)
     if not os.path.exists(new_path):
         os.mkdir(new_path)

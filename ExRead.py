@@ -4,35 +4,39 @@ from PIL import Image
 
 import mutagen
 from mutagen.easyid3 import EasyID3
+import logging  # for seeing if error
+
+# log =
 
 
-def grab_dict(ex_dict):  # same for both
+# grabs description from exif dict
+def grab_disc(ex_dict):  # same for both
     has_disc = True
-    if 270 not in ex_dict.keys():  # if not in, add to remove error
+    if 270 not in ex_dict.keys():  # if no tag, one is added so  for key assignment
         ex_dict[270] = b''
-
+    # Type: bytes so string to see if one already
     disc = ex_dict[270].decode('utf-8')
-    if len(disc.replace(' ', '')) == 0:
+    if len(disc.replace(' ', '')) == 0:  # if no description returns false so I can add one
         has_disc = False
     return has_disc  # if empty
 
 
+# changes description in exif data
 def image_disc(img_path, n_disc):
-    # if img_path.endswith('.NEF'): # change type
     had_disc = True
     load_error = False
-    try:
+    try:  # avoid opening error
         with Image.open(img_path) as img:  # loads image
             if img_path.endswith('.NEF'):
                 ex_dict = img.tag  # nef tag
-                had_disc = grab_dict(ex_dict)
+                had_disc = grab_disc(ex_dict)
                 if not had_disc:
                     img.tag[270] = n_disc
             elif img_path.lower().endswith('.jpg'):
                 ex_dict = piexif.load(img.info['exif'])  # gets metadata
-                # description at 0th, 270. Type: bytes so string to see if one already
+                # description at 0th, 270.
                 ex_0 = ex_dict['0th']  # 0th key
-                had_disc = grab_dict(ex_0)   # zeroth key is update
+                had_disc = grab_disc(ex_0)   # zeroth key is update
 
                 if not had_disc:
                     ex_dict['0th'] = ex_0  # since zeroth key is updated, we can dump all back
@@ -46,7 +50,7 @@ def image_disc(img_path, n_disc):
 
 
 def mp3(file, alb, artist='Adventures in Odyssey'):  # use for mp3, but default odyssey
-    if file.endswith('.mp3'):  # todo maybe switch to mutagen, and add alb art # img_path = 'C:/A Images'
+    if file.endswith('.mp3'):  # so only works with mp3
         try:
             tag = EasyID3(file)
 
