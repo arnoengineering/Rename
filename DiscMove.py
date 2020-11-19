@@ -56,12 +56,21 @@ for img_path in images:
 
             try:
                 date_path = str(tags["EXIF DateTimeOriginal"]).replace(":", ".")[:7]
+
+                # check if posible
+                try:
+                    int(date_path[0])
+                except ValueError:
+                    print('Using datetime')
+                    date_path = str(tags["Image DateTime"]).replace(":", ".")[:7]
                 success_count += 1
 
             except KeyError:
                 print(str(img_path) + " does not have EXIF tags.")
                 fail_count += 1
                 date_path = "No Date"
+    if success_count >= 0 and success_count % 100 == 0:
+        print('working')  # so you know its running
     new_path = os.path.join(dirs_path, date_path)
     if not os.path.exists(new_path):
         os.mkdir(new_path)

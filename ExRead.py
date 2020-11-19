@@ -1,5 +1,3 @@
-# add description to image
-import exifread
 import piexif
 import os
 from PIL import Image
@@ -23,8 +21,8 @@ def image_disc(img_path, n_disc):
     # if img_path.endswith('.NEF'): # change type
     had_disc = True
     load_error = False
-    with Image.open(img_path) as img:  # loads image
-        try:
+    try:
+        with Image.open(img_path) as img:  # loads image
             if img_path.endswith('.NEF'):
                 ex_dict = img.tag  # nef tag
                 had_disc = grab_dict(ex_dict)
@@ -41,17 +39,10 @@ def image_disc(img_path, n_disc):
                     ex_bytes = piexif.dump(ex_dict)  # changes disc
                     piexif.insert(ex_bytes, img_path)  # adds to photo
 
-        except:
-            print('error with image {}'.format(img_path.split('/')[-1]))  # prints image
-            load_error = True
+    except:
+        print('error with image {}'.format(img_path.split('/')[-1]))  # prints image
+        load_error = True
     return had_disc, load_error
-
-
-def nef_data(img_path):
-    f = open(img_path, 'rb')
-    tags = exifread.process_file(f, details=False, stop_tag="DateTimeOriginal")
-    print(tags)
-    f.close()
 
 
 def mp3(file, alb, artist='Adventures in Odyssey'):  # use for mp3, but default odyssey
