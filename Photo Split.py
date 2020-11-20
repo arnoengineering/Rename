@@ -16,7 +16,7 @@ def split_files(file_path, img_size):
     img_name = os.path.basename(file_path)
     parent_dir = os.path.dirname(file_path).split('\\')[-1]
 
-    # loops through x and y valuse in 2x2 grid
+    # loops through x and y values in 2x2 grid
     for x in range(1):
         for y in range(1):
             num += 1
