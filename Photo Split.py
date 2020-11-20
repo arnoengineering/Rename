@@ -29,5 +29,3 @@ def split_files(file_path, img_size):
                 os.makedirs(save_dir)
 
             sub_img.save(os.path.join(new_dir, img_name))  # names in new dir
-
-
