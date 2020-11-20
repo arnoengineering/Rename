@@ -14,12 +14,12 @@ error = 0
 def split_files(file_path, third=False):
     global error
     split_rec = []
+    num = 0  # what sub
     if file_path.endswith('.NEF') or file_path.lower().endswith('.jpg'):
-        num = 0  # what sub
         try:
             img = Image.open(file_path)
             # gets img name and basename
-            img_name = os.path.basename(file_path)
+            img_name, ext = os.path.splitext(os.path.basename(file_path))
             parent_dir = os.path.dirname(file_path).split('\\')[-1]
 
             if third:
@@ -43,7 +43,7 @@ def split_files(file_path, third=False):
                 # makes dir if not present
                 if not os.path.exists(save_dir):
                     os.makedirs(save_dir)
-                sub_img.save(os.path.join(new_dir, new_name))  # names in new dir
+                sub_img.save(os.path.join(new_dir, new_name + ext))  # names in new dir
 
         except UnidentifiedImageError:
             error += 1
@@ -55,6 +55,7 @@ for root, dirs, files in os.walk(path):
     for file in files:
         file = os.path.join(root, file)
         nu = split_files(file)
+        print(file)
         total += nu
 
 print('finished editing {} images, with {} errors'.format(total, error))
