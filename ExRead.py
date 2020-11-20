@@ -1,12 +1,9 @@
 import piexif
 import os
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 
 import mutagen
 from mutagen.easyid3 import EasyID3
-import logging  # for seeing if error
-
-# log =
 
 
 # grabs description from exif dict
@@ -43,8 +40,8 @@ def image_disc(img_path, n_disc):
                     ex_bytes = piexif.dump(ex_dict)  # changes disc
                     piexif.insert(ex_bytes, img_path)  # adds to photo
 
-    except:
-        print('error with image {}'.format(img_path.split('/')[-1]))  # prints image
+    except (KeyError, UnidentifiedImageError) as e:
+        print('error {} with image {}'.format(e, img_path.split('/')[-1]))  # prints image
         load_error = True
     return had_disc, load_error
 
