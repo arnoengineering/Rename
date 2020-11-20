@@ -1,4 +1,5 @@
 import RenameMod
+import os
 from ExRead import mp3
 
 path = input("path: ")  # 'P:/Music/Adventures in Odyssey'
@@ -66,3 +67,16 @@ def get_mp3():
     to_ed = RenameMod.rename_walk(pa)
     for fi, di in to_ed.items():  # adds mp3 tags to all files and alb
         mp3(fi, di)
+
+
+def multi_dir_text():
+    num = 0
+    file_list = RenameMod.rename_walk(path)  # list of all sub dir and files
+    for img, alb in file_list.items():
+        num += 1
+        file_path = os.path.dirname(img)
+        name = alb + str(num)
+        try:
+            os.rename(img, os.path.join(file_path, name))
+        except (FileNotFoundError, FileExistsError) as e:
+            print("error {} with image {}".format(e, img))
