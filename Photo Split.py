@@ -48,14 +48,13 @@ def split_files(file_path, third=False):
         except UnidentifiedImageError:
             error += 1
             print('error with image ', file)
-        return num
+    return num
 
 
 for root, dirs, files in os.walk(path):
     for file in files:
         file = os.path.join(root, file)
         nu = split_files(file)
-        print(file)
         total += nu
 
 print('finished editing {} images, with {} errors'.format(total, error))
