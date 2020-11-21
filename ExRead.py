@@ -61,11 +61,12 @@ def img_date(image, year, mon, day):
 
 def dir_date(dirs):
     for di in dirs:
-        d_date = di.split(' ')[1]  # split at space then grab year
+        parent_dir = di.split('\\')[-1]
+        d_date = parent_dir.split(' ')[1]  # split at space then grab year
         file_d = os.listdir(di)
         for n, file in enumerate(file_d):
             ext = os.path.splitext(file)[1]
-            new_name = di + str(n) + ext
+            new_name = parent_dir + ' ' + str(n) + ext
             new_name = os.path.join(di, new_name)
             file = os.path.join(di, file)
             try:

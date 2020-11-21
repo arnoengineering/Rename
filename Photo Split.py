@@ -1,13 +1,15 @@
 import os
+from ExRead import dir_date
 from PIL import Image, UnidentifiedImageError
 
-path = r'N:\P + V\MOM 3'
+path = r'N:\P + V\MOM Split'
 new_dir = r'N:\P + V\Mom Split'
 size = (200, 400)  # x, y pix
 third_val = {(15, 620): (0, 900), (630, 1240): (0, 900), (125, 1020): (910, 1500)}  # if split by 3
 norm_val = [[(15, 540), (560, 1100)], [(0, 750), (760, 1500)]]  # if quartered
 total = 0
 error = 0
+dir_list = []
 
 
 # third if photo to be split by 3
@@ -52,10 +54,13 @@ def split_files(file_path, third=False):
 
 
 for root, dirs, files in os.walk(path):
-    for di in dirs
+    for di in dirs:
+        dir_list.append(os.path.join(root, di))
     # for file in files:
     #     file = os.path.join(root, file)
     #     num_r = split_files(file, True)
     #     total += num_r
+
+dir_date(dir_list)
 
 print('finished editing {} images, with {} errors'.format(total, error))
