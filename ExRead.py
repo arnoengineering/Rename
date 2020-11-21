@@ -46,6 +46,16 @@ def image_disc(img_path, n_disc):
     return had_disc, load_error
 
 
+def img_date(image, year, mon, day):
+    exif_dict = piexif.load(image)
+    new_date = '{}:{}:{} 12:00:00'.format(year, mon, day) # default time
+    exif_dict['0th'][piexif.ImageIFD.DateTime] = new_date
+    exif_dict['Exif'][piexif.ExifIFD.DateTimeOriginal] = new_date
+    exif_dict['Exif'][piexif.ExifIFD.DateTimeDigitized] = new_date
+    exif_bytes = piexif.dump(exif_dict)
+    piexif.insert(exif_bytes, image)
+
+
 def mp3(file, alb, artist='Adventures in Odyssey'):  # use for mp3, but default odyssey
     if file.endswith('.mp3'):  # so only works with mp3
         try:

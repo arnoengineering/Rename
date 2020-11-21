@@ -1,8 +1,8 @@
 import os
 from PIL import Image, UnidentifiedImageError
 
-path = r'C:\Users\parno\Desktop\La Pas'
-new_dir = r'C:\Users\parno\Desktop\LA S'
+path = r'N:\P + V\MOM LOOK'
+new_dir = r'N:\P + V\Mom Split'
 size = (200, 400)  # x, y pix
 third_val = {(15, 620): (0, 900), (630, 1240): (0, 900), (125, 1020): (910, 1500)}
 norm_val = [[(15, 540), (560, 1100)], [(0, 750), (760, 1500)]]
@@ -43,7 +43,7 @@ def split_files(file_path, third=False):
                 # makes dir if not present
                 if not os.path.exists(save_dir):
                     os.makedirs(save_dir)
-                sub_img.save(os.path.join(new_dir, new_name + ext))  # names in new dir
+                sub_img.save(os.path.join(save_dir, new_name + ext))  # names in new dir
 
         except UnidentifiedImageError:
             error += 1
@@ -54,7 +54,7 @@ def split_files(file_path, third=False):
 for root, dirs, files in os.walk(path):
     for file in files:
         file = os.path.join(root, file)
-        nu = split_files(file)
-        total += nu
+        num_r = split_files(file)
+        total += num_r
 
 print('finished editing {} images, with {} errors'.format(total, error))
