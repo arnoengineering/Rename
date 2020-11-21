@@ -1,6 +1,6 @@
 import RenameMod
 import os
-from ExRead import mp3
+from ExRead import mp3  # todo eval
 
 path = input("path: ")  # 'P:/Music/Adventures in Odyssey'
 
@@ -69,7 +69,7 @@ def get_mp3():
         mp3(fi, di)
 
 
-def multi_dir_text():
+def multi_dir_text():  # todo fix
     num = 0
     file_list = RenameMod.rename_walk(path)  # list of all sub dir and files
     for img, alb in file_list.items():

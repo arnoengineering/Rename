@@ -1,5 +1,5 @@
 # module to loop and rename
-import os
+import os  # todo add except
 
 
 def rename_text(path, remove='', prefix=''):

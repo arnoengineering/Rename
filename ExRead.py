@@ -47,13 +47,32 @@ def image_disc(img_path, n_disc):
 
 
 def img_date(image, year, mon, day):
-    exif_dict = piexif.load(image)
-    new_date = '{}:{}:{} 12:00:00'.format(year, mon, day) # default time
-    exif_dict['0th'][piexif.ImageIFD.DateTime] = new_date
-    exif_dict['Exif'][piexif.ExifIFD.DateTimeOriginal] = new_date
-    exif_dict['Exif'][piexif.ExifIFD.DateTimeDigitized] = new_date
-    exif_bytes = piexif.dump(exif_dict)
-    piexif.insert(exif_bytes, image)
+    try:
+        exif_dict = piexif.load(image)
+        new_date = '{}:{}:{} 12:00:00'.format(year, mon, day)  # default time
+        exif_dict['0th'][piexif.ImageIFD.DateTime] = new_date
+        exif_dict['Exif'][piexif.ExifIFD.DateTimeOriginal] = new_date
+        exif_dict['Exif'][piexif.ExifIFD.DateTimeDigitized] = new_date
+        exif_bytes = piexif.dump(exif_dict)
+        piexif.insert(exif_bytes, image)
+    except (KeyError, UnidentifiedImageError) as e:
+        print('error {} with image {}'.format(e, image))  # prints image
+
+
+def dir_date(dirs):
+    for di in dirs:
+        d_date = di.split(' ')[1]  # split at space then grab year
+        file_d = os.listdir(di)
+        for n, file in enumerate(file_d):
+            ext = os.path.splitext(file)[1]
+            new_name = di + str(n) + ext
+            new_name = os.path.join(di, new_name)
+            file = os.path.join(di, file)
+            try:
+                os.rename(file, new_name)
+                img_date(new_name, d_date, 1, 1)  # don't know month or day
+            except (FileExistsError, FileNotFoundError) as e:
+                print('error {} with image {}'.format(e, file))
 
 
 def mp3(file, alb, artist='Adventures in Odyssey'):  # use for mp3, but default odyssey
