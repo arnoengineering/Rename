@@ -48,15 +48,20 @@ def image_disc(img_path, n_disc):
 
 def img_date(image, year, mon, day):
     try:
-        exif_dict = piexif.load(image)
+        exif_dict = piexif.load(image)  # load image
         new_date = '{}:{}:{} 12:00:00'.format(year, mon, day)  # default time
+
+        # set new dict
         exif_dict['0th'][piexif.ImageIFD.DateTime] = new_date
         exif_dict['Exif'][piexif.ExifIFD.DateTimeOriginal] = new_date
         exif_dict['Exif'][piexif.ExifIFD.DateTimeDigitized] = new_date
+
+        # save back to image
         exif_bytes = piexif.dump(exif_dict)
         piexif.insert(exif_bytes, image)
     except (KeyError, UnidentifiedImageError) as e:
         print('error {} with image {}'.format(e, image))  # prints image
+        return True  # for error
 
 
 def dir_date(dirs):

@@ -68,6 +68,9 @@ for root, dirs, files in os.walk(path):
             total += num_r
 
 if rename:
-    dir_date(dir_list)
+    er = dir_date(dir_list)
+    total = len(dir_list)  # for num of images
+    if er:  # if error in image date error is added, same format for print
+        error += 1
 
 print('finished editing {} images, with {} errors'.format(total, error))
