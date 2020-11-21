@@ -64,11 +64,13 @@ def dir_date(dirs):
         parent_dir = di.split('\\')[-1]
         d_date = parent_dir.split(' ')[1]  # split at space then grab year
         file_d = os.listdir(di)
-        for n, file in enumerate(file_d):
+
+        for n, file in enumerate(file_d):  # num of file and name
             ext = os.path.splitext(file)[1]
-            new_name = parent_dir + ' ' + str(n) + ext
+            new_name = parent_dir + ' ' + str(n) + ext  # name of dir and file num
             new_name = os.path.join(di, new_name)
             file = os.path.join(di, file)
+
             try:
                 os.rename(file, new_name)
                 img_date(new_name, d_date, 1, 1)  # don't know month or day
