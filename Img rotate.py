@@ -6,7 +6,8 @@ path = r'N:\P + V\Mom Split'
 for root, dirs, files in os.walk(path):
     for file in files:
         if file.endswith('.jpg'):
-            parent_dir, ang_dir = root.split('\\', -1)  # [-2:]  # dir for name and angle
+            ang_dir, parent_dir = root.rsplit('\\', 2)  # reverses since right split [-2:]  # dir for name and angle
+
             try:
                 ang = int(ang_dir)
             except ValueError:
