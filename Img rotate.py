@@ -6,10 +6,10 @@ path = r'N:\P + V\Mom Split'
 for root, dirs, files in os.walk(path):
     for file in files:
         if file.endswith('.jpg'):
-            parent_dir, ang_dir = root.split('\\')[-2:]  # dir for name and angle
+            parent_dir, ang_dir = root.split('\\', -1)  # [-2:]  # dir for name and angle
             try:
                 ang = int(ang_dir)
-            except ValueError:  # todo what error
+            except ValueError:
                 print('error with dir ', root)
                 break  # stops rerunning code for same albs if already checked
             else:
