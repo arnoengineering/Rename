@@ -46,7 +46,8 @@ def image_disc(img_path, n_disc):
     return had_disc, load_error
 
 
-def img_date(image, year, mon, day):
+def img_date(image, year, mon, day):  # todo check iof date exists
+    img_er = False
     try:
         exif_dict = piexif.load(image)  # load image
         new_date = '{}:{}:{} 12:00:00'.format(year, mon, day)  # default time
@@ -61,7 +62,8 @@ def img_date(image, year, mon, day):
         piexif.insert(exif_bytes, image)
     except (KeyError, UnidentifiedImageError) as e:
         print('error {} with image {}'.format(e, image))  # prints image
-        return True  # for error
+        ing_er = True
+    return img_er  # for error
 
 
 def dir_date(dirs):

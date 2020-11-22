@@ -4,14 +4,16 @@ from PIL import Image, UnidentifiedImageError
 
 path = r'N:\P + V\MOM Split'
 new_dir = r'N:\P + V\Mom Split'
+rename = True  # rename or split
+three = False  # third or quarter
+
 size = (200, 400)  # x, y pix
 third_val = {(15, 620): (0, 900), (630, 1240): (0, 900), (125, 1020): (910, 1500)}  # if split by 3
 norm_val = [[(15, 540), (560, 1100)], [(0, 750), (760, 1500)]]  # if quartered
+
 total = 0
 error = 0
 dir_list = []
-rename = True  # rename or split
-three = True  # third or quarter
 
 
 # third if photo to be split by 3
@@ -69,8 +71,9 @@ for root, dirs, files in os.walk(path):
 
 if rename:
     er = dir_date(dir_list)
-    total = len(dir_list)  # for num of images
     if er:  # if error in image date error is added, same format for print
         error += 1
+    else:
+        total += 1
 
 print('finished editing {} images, with {} errors'.format(total, error))
