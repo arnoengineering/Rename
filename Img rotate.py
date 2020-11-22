@@ -2,17 +2,17 @@ import os
 
 from PIL import Image
 
-path = ''
-file_dir = os.listdir(path)
-parent_dir = path.split('\\')[-1]
-try:
-    ang = int(parent_dir)
-except ValueError:  # todo what error
-    print('error with dir ', path)
-else:
-    if ang != 0:
-        for file in file_dir:
-            file = os.path.join(path, file)
-            img = Image.open(file)
-            img = img.rotate(ang)
-            img.save(file)
+path = r'N:\P + V\Mom Split'
+for root, dirs, files in path:
+    for file in files:
+        parent_dir, ang_dir = root.split('\\')[-2:]
+        try:
+            ang = int(ang_dir)
+        except ValueError:  # todo what error
+            print('error with dir ', root)
+            break
+        else:
+            if ang != 0:
+                img = Image.open(os.path.join(root, file))
+                img = img.rotate(ang)
+                img.save(os.path.join(parent_dir, file))
