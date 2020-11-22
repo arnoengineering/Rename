@@ -1,4 +1,5 @@
 import piexif
+from piexif import ImageIFD, ExifIFD
 import os
 from PIL import Image, UnidentifiedImageError
 
@@ -46,16 +47,21 @@ def image_disc(img_path, n_disc):
     return had_disc, load_error
 
 
-def img_date(image, year, mon, day):  # todo check iof date exists
+def img_date(image, year, mon, day, ovr_write=False):
     img_er = False
     try:
         exif_dict = piexif.load(image)  # load image
         new_date = '{}:{}:{} 12:00:00'.format(year, mon, day)  # default time
 
-        # set new dict
-        exif_dict['0th'][piexif.ImageIFD.DateTime] = new_date
-        exif_dict['Exif'][piexif.ExifIFD.DateTimeOriginal] = new_date
-        exif_dict['Exif'][piexif.ExifIFD.DateTimeDigitized] = new_date
+        # set new dict: if over write it will over write, else, it will only right if not already present
+        if not ovr_write and (len(exif_dict['0th'][ImageIFD.DateTime]) >= 0 or
+                              len(exif_dict['Exif'][ExifIFD.DateTimeOriginal]) >= 0 or
+                              len(exif_dict['Exif'][ExifIFD.DateTimeDigitized]) >= 0):
+            pass
+        else:
+            exif_dict['0th'][ImageIFD.DateTime] = new_date
+            exif_dict['Exif'][ExifIFD.DateTimeOriginal] = new_date
+            exif_dict['Exif'][ExifIFD.DateTimeDigitized] = new_date
 
         # save back to image
         exif_bytes = piexif.dump(exif_dict)

@@ -1,7 +1,7 @@
 import os
-
 from PIL import Image, UnidentifiedImageError
 
+# variables to count format and output
 file_com = 0
 file_err = 0
 dir_err = 0
