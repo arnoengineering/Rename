@@ -90,7 +90,7 @@ def mp3(file, alb, artist='Adventures in Odyssey'):  # use for mp3, but default 
         try:
             tag = EasyID3(file)
 
-        except:
+        except:  # todo error type
             tag = mutagen.File(file, easy=True)
             tag.add_tags()
 

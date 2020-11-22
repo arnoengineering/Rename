@@ -4,10 +4,15 @@ from PIL import Image
 
 path = ''
 file_dir = os.listdir(path)
-ang = int(input('angle CCW: '))  # angle from dir
-
-for file in file_dir:
-    file = os.path.join(path, file)
-    img = Image.open(file)
-    img = img.rotate(ang)
-    img.save(file)
+parent_dir = path.split('\\')[-1]
+try:
+    ang = int(parent_dir)
+except ValueError:  # todo what error
+    print('error with dir ', path)
+else:
+    if ang != 0:
+        for file in file_dir:
+            file = os.path.join(path, file)
+            img = Image.open(file)
+            img = img.rotate(ang)
+            img.save(file)
