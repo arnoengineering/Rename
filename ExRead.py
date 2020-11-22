@@ -4,7 +4,9 @@ import os
 from PIL import Image, UnidentifiedImageError
 
 import mutagen
-from mutagen.easyid3 import EasyID3, EasyID3KeyError
+from mutagen.easyid3 import EasyID3
+# noinspection PyProtectedMember
+from mutagen.id3 import ID3NoHeaderError
 
 
 # grabs description from exif dict
@@ -96,7 +98,7 @@ def mp3(file, alb, artist='Adventures in Odyssey'):  # use for mp3, but default 
         try:
             tag = EasyID3(file)
 
-        except EasyID3KeyError:
+        except ID3NoHeaderError:
             tag = mutagen.File(file, easy=True)
             tag.add_tags()
 
@@ -109,5 +111,5 @@ def mp3(file, alb, artist='Adventures in Odyssey'):  # use for mp3, but default 
         tag['tracknumber'] = num
         try:
             tag.save()
-        except EasyID3KeyError:
+        except KeyError:
             print('error with {} in {}'.format(name, alb))
