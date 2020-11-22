@@ -1,21 +1,39 @@
 import os
 
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
+
+file_com = 0
+file_err = 0
+dir_err = 0
+dir_list = []
 
 path = r'N:\P + V\Mom Split'
 for root, dirs, files in os.walk(path):
     for file in files:
         if file.endswith('.jpg'):
-            ang_dir, parent_dir = root.rsplit('\\', 2)  # reverses since right split [-2:]  # dir for name and angle
+            parent_dir, ang_dir = root.rsplit('\\', 1)  # dir for name and angle splits from right
 
             try:
                 ang = int(ang_dir)
             except ValueError:
                 print('error with dir ', root)
+                dir_err += 1
                 break  # stops rerunning code for same albs if already checked
             else:
+                if parent_dir not in dir_list:  # so output of number of dirs done
+                    dir_list.append(parent_dir)
+                # breaks if alb is zero
                 if ang == 0:
                     break
-                img = Image.open(os.path.join(root, file))
-                img = img.rotate(ang)
-                img.save(os.path.join(parent_dir, file))  # moves to original dir
+
+                try:
+                    img = Image.open(os.path.join(root, file))
+                    img.rotate(ang, expand=True)  # expand to get original dimensions
+                    img.save(os.path.join(parent_dir, file))  # moves to original dir
+                    file_com += 1
+                except UnidentifiedImageError:
+                    print('error with file ', file)
+                    file_err += 1
+
+print('{} files completed with {} errors'.format(file_com, file_err))
+print('{} dirs completed with {} errors'.format(len(dir_list), file_err))
