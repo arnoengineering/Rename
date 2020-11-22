@@ -5,6 +5,7 @@ from PIL import Image, UnidentifiedImageError
 
 import mutagen
 from mutagen.easyid3 import EasyID3
+# from mutagen.easyid3 import e
 
 
 # grabs description from exif dict
@@ -68,7 +69,7 @@ def img_date(image, year, mon, day, ovr_write=False):
         piexif.insert(exif_bytes, image)
     except (KeyError, UnidentifiedImageError) as e:
         print('error {} with image {}'.format(e, image))  # prints image
-        ing_er = True
+        img_er = True
     return img_er  # for error
 
 

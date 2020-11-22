@@ -4,8 +4,16 @@ from PIL import Image, UnidentifiedImageError
 
 path = input('Path to edit: ')
 new_dir = r'N:\P + V\Mom Split'
-rename = True  # rename or split
+ren_in = input('Rename files? (n for split): ')
+th_in = input('In thirds? (n for quarter)')
 three = False  # third or quarter
+
+if ren_in.lower() == 'y' or ren_in.lower() == 'yes':
+    rename = True  # rename or split
+else:  # only needs to work if not rename
+    rename = False
+    if th_in.lower() == 'y' or th_in.lower() == 'yes':
+        three = True
 
 size = (200, 400)  # x, y pix
 third_val = {(15, 620): (0, 900), (630, 1240): (0, 900), (125, 1020): (910, 1500)}  # if split by 3

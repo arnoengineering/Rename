@@ -146,7 +146,7 @@ def walk_ren(path):
     for root, di, files in os.walk(path):
         alb = root.split('\\')[-1]  # last alb
         for num, file in enumerate(files):
-            f_name, ext = os.path.splitext(file)
+            ext = os.path.splitext(file)[1]
             n_name = str(alb) + " " + str(num + 1)
             n_file = n_name + ext
             rename(file, n_file, root)

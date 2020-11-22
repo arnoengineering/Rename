@@ -1,9 +1,7 @@
 import RenameMod
-import os
 from ExRead import mp3  # todo eval
 
 path = input("path: ")  # 'P:/Music/Adventures in Odyssey'
-
 
 def last_ep():
     last_num = int(input("Last Episode #: "))
@@ -67,3 +65,6 @@ def get_mp3():
     to_ed = RenameMod.rename_walk(pa)
     for fi, di in to_ed.items():  # adds mp3 tags to all files and alb
         mp3(fi, di)
+
+
+eval(input('What function to run'))  # to accesses correct function
