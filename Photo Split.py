@@ -2,7 +2,7 @@ import os
 from ExRead import dir_date
 from PIL import Image, UnidentifiedImageError
 
-path = r'N:\P + V\MOM Split'
+path = input('Path to edit: ')
 new_dir = r'N:\P + V\Mom Split'
 rename = True  # rename or split
 three = False  # third or quarter

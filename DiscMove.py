@@ -20,8 +20,6 @@ start_num = 0
 sub_dir = ['Edits', 'Weird', 'Notes', 'Alaska', 'Baltic', 'Greece', 'Mediterranean', 'New England', 'Norway']
 # Recursively walk through all subdirectories and store the path + name of the jpg images
 images = []
-pic_rename = []
-nef_pics = []
 
 
 for root, dirs, files in os.walk(images_path):

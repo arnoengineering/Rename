@@ -7,13 +7,15 @@ file_err = 0
 dir_err = 0
 dir_list = []
 
-path = r'N:\P + V\MOM EDIT'
+path = input('Path to dir: ')
+
+
 for root, dirs, files in os.walk(path):
     for file in files:
         if file.endswith('.jpg'):
             parent_dir, ang_dir = root.rsplit('\\', 1)  # dir for name and angle splits from right
 
-            try:
+            try:  # only runs on albums with images and have direction
                 ang = int(ang_dir)
             except ValueError:
                 print('error with dir ', root)
