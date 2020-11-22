@@ -14,8 +14,8 @@ tot_pos = 0
 path_main = 'N:\\P + V\\Photos'  # what directory to edit
 
 # if has special name
-dict_to_edit = {'Beacon Isl': 'RSA Beacon Isl', 'Dehlen': 'RSA Dehlen', 'RSA Imma': 'RSA Imma'}
-sub_ed = []  # grabs two dir
+dict_to_edit = {'Beacon Isl': 'RSA Beacon Isl'}
+sub_ed = []  # grabs two dirs for name ie dir, sub dir
 
 
 class PicLoop:
@@ -146,7 +146,7 @@ for root, dirs, files in os.walk(path_main):  # loops through all and sees if to
         elif alb in sub_ed:
             name = root.split('\\', 1)[-1] + ' ' + alb
         else:
-            name = alb  # name = alb name
+            name = alb
         try:
             path = os.path.join(root, alb)
         except FileNotFoundError:  # adds to list of errors

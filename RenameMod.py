@@ -1,5 +1,5 @@
 # module to loop and rename
-import os  # todo add except
+import os
 
 
 def rename_text(path, remove='', prefix=''):
@@ -119,7 +119,10 @@ def rename(file, n_file, path):
     f_path = os.path.join(path, file)
     n_path = os.path.join(path, n_file)
     # renames files keeping same extension
-    os.rename(f_path, n_path)
+    try:
+        os.rename(f_path, n_path)
+    except (FileExistsError, FileNotFoundError) as e:
+        print("error {} with image {}".format(e, f_path))
 
 
 def path_split(file_path):
@@ -137,3 +140,13 @@ def rename_walk(path):
             file_list[file_path] = alb  # dir list
     print(file_list)
     return file_list
+
+
+def walk_ren(path):
+    for root, di, files in os.walk(path):
+        alb = root.split('\\')[-1]  # last alb
+        for num, file in enumerate(files):
+            f_name, ext = os.path.splitext(file)
+            n_name = str(alb) + " " + str(num + 1)
+            n_file = n_name + ext
+            rename(file, n_file, root)

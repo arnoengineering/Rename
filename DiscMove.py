@@ -19,6 +19,7 @@ start_num = 0
 # files to get double dir
 sub_dir = ['Edits', 'Weird', 'Notes', 'Alaska', 'Baltic', 'Greece', 'Mediterranean', 'New England', 'Norway']
 # Recursively walk through all subdirectories and store the path + name of the jpg images
+
 images = []
 
 
