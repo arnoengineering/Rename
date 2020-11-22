@@ -7,7 +7,7 @@ file_err = 0
 dir_err = 0
 dir_list = []
 
-path = r'N:\P + V\Mom Split'
+path = r'N:\P + V\MOM EDIT'
 for root, dirs, files in os.walk(path):
     for file in files:
         if file.endswith('.jpg'):
@@ -22,14 +22,15 @@ for root, dirs, files in os.walk(path):
             else:
                 if parent_dir not in dir_list:  # so output of number of dirs done
                     dir_list.append(parent_dir)
+                    print(parent_dir)
                 # breaks if alb is zero
                 if ang == 0:
                     break
 
                 try:
                     img = Image.open(os.path.join(root, file))
-                    img.rotate(ang, expand=True)  # expand to get original dimensions
-                    img.save(os.path.join(parent_dir, file))  # moves to original dir
+                    out = img.rotate(ang, expand=True)  # expand to get original dimensions
+                    out.save(os.path.join(parent_dir, file))  # moves to original dir
                     file_com += 1
                 except UnidentifiedImageError:
                     print('error with file ', file)
