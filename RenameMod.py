@@ -153,8 +153,11 @@ def walk_ren(path):
 
 
 def ren_file_lines(file):
-    with open(file, 'w') as f:
-        lines = [li.strip().split('  ', 1)[1] for li in f.readlines() if '  ' in li.strip()]
-        lines = list(dict.fromkeys(lines))
-        lines.sort()
-        f.writelines(lines)
+    f = open(file)
+    lines = f.readlines()
+    lines = [li.strip().split('  ', 1)[1] for li in lines if '  ' in li.strip()]
+    lines = list(dict.fromkeys(lines))
+    lines.sort()
+    f.close()
+    f = open(file, 'w')
+    f.writelines(lines)
