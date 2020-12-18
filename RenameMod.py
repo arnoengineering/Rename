@@ -150,3 +150,11 @@ def walk_ren(path):
             n_name = str(alb) + " " + str(num + 1)
             n_file = n_name + ext
             rename(file, n_file, root)
+
+
+def ren_file_lines(file):
+    with open(file, 'w') as f:
+        lines = [li.strip().split('  ', 1)[1] for li in f.readlines() if '  ' in li.strip()]
+        lines = list(dict.fromkeys(lines))
+        lines.sort()
+        f.writelines(lines)
