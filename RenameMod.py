@@ -161,3 +161,29 @@ def ren_file_lines(file):
     f.close()
     f = open(file, 'w')
     f.writelines(lines)
+
+
+def mom_pics(f):
+    p = r'J:\HPSCANS'
+    with open(f) as fi:
+        line = fi.readlines()
+    for li in line:
+        dir_n = os.path.join(p, li.strip())
+        os.mkdir(dir_n)
+
+
+# mom_pics(r'C:\Users\parno\Documents\mom_pics.txt')
+
+p = r'J:\HPSCANS'
+for root, dirs, f in os.walk(p):
+    dir_range = {os.path.join(root, d): d.split('PIC')[1].replace(' ', '').split('-') for d in dirs}
+    for fil in f:
+        fi, ext = os.path.splitext(fil)
+        try:
+            f_num = int(fi.replace('PIC', ''))
+            for d in dir_range.keys():
+                if int(dir_range[d][0]) <= f_num <= int(dir_range[d][1]):
+                    f_name = os.path.join(d, fil)
+                    os.rename(os.path.join(root, fil), f_name)
+        except (ValueError, FileExistsError):
+            print("error", fil)
